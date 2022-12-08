@@ -42,6 +42,7 @@ function drawScene(ctx, programInfo, buffers) {
   // Tell WebGL how to pull out the positions from the position
   // buffer into the vertexPosition attribute.
   setPositionAttribute(ctx, buffers, programInfo);
+  setColorAttribute(ctx, buffers, programInfo);
 
   // Tell WebGL to use our program when drawing
   ctx.useProgram(programInfo.program);
@@ -68,22 +69,17 @@ function drawScene(ctx, programInfo, buffers) {
 // Tell WebGL how to pull out the positions from the position
 // buffer into the vertexPosition attribute.
 function setPositionAttribute(ctx, buffers, programInfo) {
-  const numComponents = 2; // pull out 2 values per iteration
-  const type = ctx.FLOAT; // the data in the buffer is 32bit floats
-  const normalize = false; // don't normalize
-  const stride = 0; // how many bytes to get from one set of values to the next
-  // 0 = use type and numComponents above
-  const offset = 0; // how many bytes inside the buffer to start from
   ctx.bindBuffer(ctx.ARRAY_BUFFER, buffers.position);
-  ctx.vertexAttribPointer(
-    programInfo.attribLocations.vertexPosition,
-    numComponents,
-    type,
-    normalize,
-    stride,
-    offset
-  );
+  ctx.vertexAttribPointer(programInfo.attribLocations.vertexPosition, 2, ctx.FLOAT, false, 0, 0);
   ctx.enableVertexAttribArray(programInfo.attribLocations.vertexPosition);
+}
+
+// Tell WebGL how to pull out the colors from the color buffer
+// into the vertexColor attribute.
+function setColorAttribute(ctx, buffers, programInfo) {
+  ctx.bindBuffer(ctx.ARRAY_BUFFER, buffers.color);
+  ctx.vertexAttribPointer(programInfo.attribLocations.vertexColor, 4, ctx.FLOAT, false, 0, 0);
+  ctx.enableVertexAttribArray(programInfo.attribLocations.vertexColor);
 }
 
 export {drawScene};
