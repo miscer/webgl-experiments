@@ -1,6 +1,6 @@
 const {mat4} = glMatrix;
 
-function drawScene(ctx, programInfo, buffers) {
+function drawScene(ctx, programInfo, buffers, squareRotation) {
   ctx.clearColor(0.0, 0.0, 0.0, 1.0); // Clear to black, fully opaque
   ctx.clearDepth(1.0); // Clear everything
   ctx.enable(ctx.DEPTH_TEST); // Enable depth testing
@@ -36,8 +36,15 @@ function drawScene(ctx, programInfo, buffers) {
   mat4.translate(
     modelViewMatrix, // destination matrix
     modelViewMatrix, // matrix to translate
-    [-0.0, 0.0, -3.0]
+    [-0.0, 0.0, -4.0]
   ); // amount to translate
+
+  mat4.rotate(
+    modelViewMatrix,
+    modelViewMatrix,
+    squareRotation,
+    [0, 0, 1]
+  );
 
   // Tell WebGL how to pull out the positions from the position
   // buffer into the vertexPosition attribute.

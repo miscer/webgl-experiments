@@ -25,7 +25,22 @@ function main() {
   };
 
   const buffers = initBuffers(ctx);
-  drawScene(ctx, programInfo, buffers);
+
+  let squareRotation = 0.0;
+  let lastTime = 0;
+
+  function render(currentTime) {
+    currentTime *= 0.001; // convert to seconds
+    const deltaTime = currentTime - lastTime;
+    lastTime = currentTime;
+
+    drawScene(ctx, programInfo, buffers, squareRotation);
+    squareRotation += deltaTime;
+
+    requestAnimationFrame(render);
+  }
+
+  requestAnimationFrame(render);
 }
 
 function initShaderProgram(ctx, vsSource, fsSource) {
