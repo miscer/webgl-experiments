@@ -26,7 +26,7 @@ function main() {
 
   const buffers = initBuffers(ctx);
 
-  let squareRotation = 0.0;
+  let cubeRotation = 0.0;
   let lastTime = 0;
 
   function render(currentTime) {
@@ -34,8 +34,8 @@ function main() {
     const deltaTime = currentTime - lastTime;
     lastTime = currentTime;
 
-    drawScene(ctx, programInfo, buffers, squareRotation);
-    squareRotation += deltaTime;
+    drawScene(ctx, programInfo, buffers, cubeRotation);
+    cubeRotation += deltaTime;
 
     requestAnimationFrame(render);
   }

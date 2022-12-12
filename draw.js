@@ -1,6 +1,6 @@
 const {mat4} = glMatrix;
 
-function drawScene(ctx, programInfo, buffers, squareRotation) {
+function drawScene(ctx, programInfo, buffers, cubeRotation) {
   ctx.clearColor(0.0, 0.0, 0.0, 1.0); // Clear to black, fully opaque
   ctx.clearDepth(1.0); // Clear everything
   ctx.enable(ctx.DEPTH_TEST); // Enable depth testing
@@ -36,20 +36,35 @@ function drawScene(ctx, programInfo, buffers, squareRotation) {
   mat4.translate(
     modelViewMatrix, // destination matrix
     modelViewMatrix, // matrix to translate
-    [-0.0, 0.0, -4.0]
+    [-0.0, 0.0, -6.0]
   ); // amount to translate
 
   mat4.rotate(
-    modelViewMatrix,
-    modelViewMatrix,
-    squareRotation,
+    modelViewMatrix, // destination matrix
+    modelViewMatrix, // matrix to rotate
+    cubeRotation, // amount to rotate in radians
     [0, 0, 1]
-  );
+  ); // axis to rotate around (Z)
+  mat4.rotate(
+    modelViewMatrix, // destination matrix
+    modelViewMatrix, // matrix to rotate
+    cubeRotation * 0.7, // amount to rotate in radians
+    [0, 1, 0]
+  ); // axis to rotate around (Y)
+  mat4.rotate(
+    modelViewMatrix, // destination matrix
+    modelViewMatrix, // matrix to rotate
+    cubeRotation * 0.3, // amount to rotate in radians
+    [1, 0, 0]
+  ); // axis to rotate around (X)
 
   // Tell WebGL how to pull out the positions from the position
   // buffer into the vertexPosition attribute.
   setPositionAttribute(ctx, buffers, programInfo);
   setColorAttribute(ctx, buffers, programInfo);
+
+  // Tell WebGL which indices to use to index the vertices
+  ctx.bindBuffer(ctx.ELEMENT_ARRAY_BUFFER, buffers.indices);
 
   // Tell WebGL to use our program when drawing
   ctx.useProgram(programInfo.program);
@@ -66,18 +81,14 @@ function drawScene(ctx, programInfo, buffers, squareRotation) {
     modelViewMatrix
   );
 
-  {
-    const offset = 0;
-    const vertexCount = 4;
-    ctx.drawArrays(ctx.TRIANGLE_STRIP, offset, vertexCount);
-  }
+  ctx.drawElements(ctx.TRIANGLES, 36, ctx.UNSIGNED_SHORT, 0);
 }
 
 // Tell WebGL how to pull out the positions from the position
 // buffer into the vertexPosition attribute.
 function setPositionAttribute(ctx, buffers, programInfo) {
   ctx.bindBuffer(ctx.ARRAY_BUFFER, buffers.position);
-  ctx.vertexAttribPointer(programInfo.attribLocations.vertexPosition, 2, ctx.FLOAT, false, 0, 0);
+  ctx.vertexAttribPointer(programInfo.attribLocations.vertexPosition, 3, ctx.FLOAT, false, 0, 0);
   ctx.enableVertexAttribArray(programInfo.attribLocations.vertexPosition);
 }
 
