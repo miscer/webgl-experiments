@@ -6,6 +6,7 @@
     "dev": "parcel index.html"
   },
   "devDependencies": {
+    "@parcel/transformer-glsl": "2.8.1",
     "parcel": "^2.8.1"
   }
 }
