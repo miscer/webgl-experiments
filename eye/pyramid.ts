@@ -6,6 +6,14 @@ export const vertices = [
   0.5, 0, 0.5, // rear right
 ];
 
+export const colors = [
+  1, 0, 0, 1,
+  0, 1, 0, 1,
+  0, 0, 1, 1,
+  1, 1, 0, 1,
+  0, 1, 1, 1,
+];
+
 export const triangles = [
   0, 1, 2, // top-front
   0, 3, 4, // top-rear

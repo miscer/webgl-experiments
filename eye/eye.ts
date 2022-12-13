@@ -1,5 +1,5 @@
 import {mat4} from "gl-matrix";
-import { createIndicesBuffer, createVerticesBuffer } from "./buffers";
+import { createColorsBuffer, createIndicesBuffer, createVerticesBuffer } from "./buffers";
 import { createProgram } from "./shaders";
 
 export function createEye(canvas: HTMLCanvasElement) {
@@ -12,12 +12,18 @@ export function createEye(canvas: HTMLCanvasElement) {
   ctx.useProgram(program);
 
   const verticesBuffer = createVerticesBuffer(ctx);
+  const colorsBuffer = createColorsBuffer(ctx);
   const indicesBuffer = createIndicesBuffer(ctx);
 
   const positionAttrib = ctx.getAttribLocation(program, "position_attr");
   ctx.bindBuffer(ctx.ARRAY_BUFFER, verticesBuffer);
   ctx.vertexAttribPointer(positionAttrib, 3, ctx.FLOAT, false, 0, 0);
   ctx.enableVertexAttribArray(positionAttrib);
+
+  const colorAttrib = ctx.getAttribLocation(program, "color_attr");
+  ctx.bindBuffer(ctx.ARRAY_BUFFER, colorsBuffer);
+  ctx.vertexAttribPointer(colorAttrib, 4, ctx.FLOAT, false, 0, 0);
+  ctx.enableVertexAttribArray(colorAttrib);
 
   const projectionMatrix = mat4.create();
   mat4.perspective(projectionMatrix, Math.PI / 4, canvas.width / canvas.height, 0.1, 10);
