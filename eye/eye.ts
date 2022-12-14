@@ -1,4 +1,4 @@
-import {mat4} from "gl-matrix";
+import { mat4, vec3 } from "gl-matrix";
 import { createColorsBuffer, createIndicesBuffer, createVerticesBuffer } from "./buffers";
 import { createProgram } from "./shaders";
 
@@ -31,6 +31,9 @@ export function createEye(canvas: HTMLCanvasElement) {
   const projectionMatrix = mat4.create();
   mat4.perspective(projectionMatrix, Math.PI / 4, canvas.width / canvas.height, 0.1, 10);
 
+  const inverseProjectionMatrix = mat4.create();
+  mat4.invert(inverseProjectionMatrix, projectionMatrix);
+
   const projectionMatrixUniform = ctx.getUniformLocation(program, "projection_matrix");
   ctx.uniformMatrix4fv(projectionMatrixUniform, false, projectionMatrix);
 
@@ -41,9 +44,15 @@ export function createEye(canvas: HTMLCanvasElement) {
   ctx.uniformMatrix4fv(viewMatrixUniform, false, viewMatrix);
 
   return {
-    render(rotation: number) {
+    render(x: number, y: number) {
+      const lookTarget = vec3.fromValues(
+        2 * (x / canvas.width - 0.5),
+        -2 * (y / canvas.height - 0.5),
+        1
+      );
+
       const modelMatrix = mat4.create();
-      mat4.rotateY(modelMatrix, modelMatrix, rotation);
+      mat4.targetTo(modelMatrix, vec3.create(), lookTarget, vec3.fromValues(0, 1, 0));
 
       const modelMatrixUniform = ctx.getUniformLocation(program, "model_matrix");
       ctx.uniformMatrix4fv(modelMatrixUniform, false, modelMatrix);
