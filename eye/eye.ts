@@ -59,7 +59,7 @@ export function createEye(canvas: HTMLCanvasElement) {
 
       ctx.clear(ctx.COLOR_BUFFER_BIT);
       ctx.bindBuffer(ctx.ELEMENT_ARRAY_BUFFER, indicesBuffer);
-      ctx.drawElements(ctx.TRIANGLES, 12, ctx.UNSIGNED_SHORT, 0);
+      ctx.drawElements(ctx.TRIANGLES, 18, ctx.UNSIGNED_SHORT, 0);
     },
   };
 }
