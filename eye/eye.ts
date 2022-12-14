@@ -8,6 +8,9 @@ export function createEye(canvas: HTMLCanvasElement) {
     throw new Error("WebGL2 is not supported");
   }
 
+  ctx.enable(ctx.CULL_FACE);
+  ctx.enable(ctx.DEPTH_TEST);
+
   const program = createProgram(ctx);
   ctx.useProgram(program);
 
